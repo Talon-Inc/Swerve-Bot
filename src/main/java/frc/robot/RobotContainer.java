@@ -74,12 +74,15 @@ public class RobotContainer {
     //     .whileTrue(new RunCommand(
     //         () -> m_robotDrive.setX(),
     //         m_robotDrive));
+    
     m_driverController.rightBumper()
-        .whileTrue(new RunCommand(
-            () -> m_robotDrive.setX(), m_robotDrive));
+        .whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive));
+
     m_driverController.leftBumper()
-        .whileTrue(new RunCommand(
-            () -> m_robotDrive.set0(), m_robotDrive));
+        .whileTrue(new RunCommand(() -> m_robotDrive.set0(), m_robotDrive));
+
+    m_driverController.start()
+        .onTrue(new RunCommand(() -> m_robotDrive.zeroHeading(), m_robotDrive));
   }
 
   /**
