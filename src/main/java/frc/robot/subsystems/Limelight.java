@@ -25,18 +25,26 @@ public class Limelight extends SubsystemBase {
   double a = ta.getDouble(0);
   double[] id = tid.getDoubleArray(new double[6]);
 
+  double angleToGoalRadians = y * (3.14159/180); //vertical angle from camera to April Tag in Radians
+
+
   /** Creates a new Limelight. */
   public Limelight() {
-     //post to smart dashboard periodically
-     SmartDashboard.putNumber("LimelightX", x);
-     SmartDashboard.putNumber("LimelightY", y);
-     SmartDashboard.putNumber("LimelightV", v);
-     SmartDashboard.putNumber("LimelightA", a);
-     SmartDashboard.putNumberArray("LimelightID", id);
+    //post to smart dashboard periodically
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("LimelightX", x);
+    SmartDashboard.putNumber("LimelightY", y);
+    SmartDashboard.putNumber("LimelightV", v);
+    SmartDashboard.putNumber("LimelightA", a);
+    SmartDashboard.putNumberArray("LimelightID", id);
+  }
+
+  public double estimateDistance() {
+    double distanceFromLimelightToGoal = (goalHeightInches - limelightLensHeightInches) / Math.tan(angleToGoalRadians);
+    return distanceFromLimelightToGoal;
   }
 }
