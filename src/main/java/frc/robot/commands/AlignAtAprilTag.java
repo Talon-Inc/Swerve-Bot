@@ -7,6 +7,8 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
@@ -52,7 +54,26 @@ public class AlignAtAprilTag extends CommandBase {
 
     Pose2d robotPose = swerveDrive.getPose();
 
-    Pose2d targetPose;
+    Pose2d targetPose = new Pose2d(new Translation2d(targetX, targetY), limelight.getRotationToTargetPlane());
+
+    double x, y, rot;
+
+    double dx = robotPose.getX() - targetPose.getX();
+    double dy = robotPose.getY() - targetPose.getY();
+
+    double distance = Math.hypot(dx, dy);
+    double angletoTarget = Math.atan2(dx, dy) * 180 / Math.PI;
+
+    rot = speedRotController.calculate(odometry.getPose().getRotation().getDegrees(), limelight.getRotationToTargetPlane().getDegrees());
+
+    double speed = -speedController.calculate(distance, 0);
+
+    Rotation2d direction = Rotation2d.fromDegrees(180 + angletoTarget - odometry.getHeading() + limelight.getRotationToTargetPlane().getDegrees());
+
+    x = direction.getCos() * speed;
+    y = direction.getSin() * speed;
+
+    swerveDrive.drive(x, y, rot, isFinished(), isFinished());
   }
 
   // Called once the command ends or is interrupted.
