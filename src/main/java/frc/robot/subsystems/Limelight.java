@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import org.ejml.data.DMatrixRMaj;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -78,7 +76,7 @@ public class Limelight extends SubsystemBase {
     return yToTarget;
   }
 
-  public Rotation2d getRotationToTargetPlan() {
+  public Rotation2d getRotationToTargetPlane() {
     return Rotation2d.fromDegrees(rotToTarget);
   }
 
