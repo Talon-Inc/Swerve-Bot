@@ -34,6 +34,8 @@ public class Limelight extends SubsystemBase {
   double distanceToTarget = 0;
   double xToTarget, yToTarget, rotToTarget;
 
+  float kP = -.1f;
+
   /** Creates a new Limelight. */
   public Limelight() {
     //post to smart dashboard periodically
@@ -63,6 +65,7 @@ public class Limelight extends SubsystemBase {
   //   double distanceFromLimelightToGoal = (goalHeightInches - limelightLensHeightInches) / Math.tan(angleToGoalRadians);
   //   return distanceFromLimelightToGoal;
   // }
+
 
   public double getDistance() {
     return distanceToTarget;

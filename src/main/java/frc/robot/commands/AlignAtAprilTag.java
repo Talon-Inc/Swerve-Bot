@@ -20,7 +20,7 @@ public class AlignAtAprilTag extends CommandBase {
   PIDController speedRotController;
 
   DriveSubsystem swerveDrive;
-  DriveSubsystem odometry;
+  // DriveSubsystem odometry;
   Limelight limelight;
 
   double targetX, targetY;
@@ -36,7 +36,7 @@ public class AlignAtAprilTag extends CommandBase {
     this.targetY = targetY;
 
     speedController = new ProfiledPIDController(1, 0, 0, new Constraints(0, 0));
-    speedRotController = new PIDController(1, 0, 0);
+    speedRotController = new PIDController(.05, 0, 0);
     speedRotController.enableContinuousInput(-180, 180);
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -52,7 +52,7 @@ public class AlignAtAprilTag extends CommandBase {
   @Override
   public void execute() {
 
-    Pose2d robotPose = swerveDrive.getPose();
+    Pose2d robotPose = new Pose2d(swerveDrive.getPose().getY(), swerveDrive.getPose().getX(), swerveDrive.getPose().getRotation());
 
     Pose2d targetPose = new Pose2d(new Translation2d(targetX, targetY), limelight.getRotationToTargetPlane());
 
@@ -63,12 +63,12 @@ public class AlignAtAprilTag extends CommandBase {
 
     double distance = Math.hypot(dx, dy);
     double angletoTarget = Math.atan2(dx, dy) * 180 / Math.PI;
-
-    rot = speedRotController.calculate(odometry.getPose().getRotation().getDegrees(), limelight.getRotationToTargetPlane().getDegrees());
+//limelight.getRotationToTargetPlane().getDegrees()
+    rot = speedRotController.calculate(swerveDrive.getPose().getRotation().getDegrees(), 0);
 
     double speed = -speedController.calculate(distance, 0);
 
-    Rotation2d direction = Rotation2d.fromDegrees(180 + angletoTarget - odometry.getHeading() + limelight.getRotationToTargetPlane().getDegrees());
+    Rotation2d direction = Rotation2d.fromDegrees(180 + angletoTarget - swerveDrive.getHeading() + 0);
 
     x = direction.getCos() * speed;
     y = direction.getSin() * speed;
