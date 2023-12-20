@@ -5,9 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Limelight;
@@ -41,15 +39,19 @@ public class AprilTagAiming extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-    double headingError = limelight.getXCrossHair();
-    SmartDashboard.putNumber("Heading Error", headingError);
 
+    //Gets Horizontal Offset From Crosshair To Target
+    double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+
+    /* rot: the rotation/angular speed of the robot. As the tx value gets smaller (meaning the horizontal
+    offset from the crosshair to the target gets closer to the center of the camera), the angular speed
+    decreases.
+     */
     double rot = Kp * tx;
 
     /* If the limelight overshoots the target to a point it cannot read it, it kept on spinning.
     So, this conditional statement will make it stop spinning if it overshoots it and can't detect
-    the April Tag anymore
+    the April Tag anymore.
      */ 
     if (limelight.getIsDetecting() == false) {
       rot = 0;
@@ -62,6 +64,7 @@ public class AprilTagAiming extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     limelight.turnOffLED();
+    swerveDrive.drive(0, 0, 0, true, true);
   }
 
   // Returns true when the command should end.
