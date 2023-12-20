@@ -18,6 +18,7 @@ public class Limelight extends SubsystemBase {
   NetworkTableEntry ty = table.getEntry("ty"); //Vertical Offset From Crosshair To Target
   NetworkTableEntry ta = table.getEntry("ta"); //Target Area
   NetworkTableEntry tid = table.getEntry("tid"); //ID of the primary in-view AprilTag
+  NetworkTableEntry led = table.getEntry("ledMode");
 
   NetworkTableEntry robotPoseTargetSpace = table.getEntry("botpose_targetspace");
   NetworkTableEntry cameraPoseTargetSpace = table.getEntry("camerapose_targetspace");
@@ -66,9 +67,20 @@ public class Limelight extends SubsystemBase {
   //   return distanceFromLimelightToGoal;
   // }
 
+  public void turnOnLED() {
+    led.setNumber(3);
+  }
+
+  public void turnOffLED() {
+    led.setNumber(1);
+  }
 
   public double getDistance() {
     return distanceToTarget;
+  }
+
+  public double getXCrossHair() {
+    return x;
   }
 
   public double getXDistance() {
@@ -85,7 +97,7 @@ public class Limelight extends SubsystemBase {
 
   public boolean getIsDetecting() {
     int id = (int) tid.getInteger(Integer.MAX_VALUE);
-    boolean isDetecting = tid.getInteger(0) == 1 && id >= 1 && id <= 8;
+    boolean isDetecting = tid.getInteger(0) == 1 || id >= 1 || id <= 8;
     return isDetecting;
   }
 }
