@@ -19,6 +19,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AprilTagAiming;
+import frc.robot.commands.GettingInRangeAT;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Limelight;
 // import frc.robot.commands.AlignAtAprilTag;
@@ -39,8 +40,9 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final Limelight m_Limelight = new Limelight();
 
-  //private final AlignAtAprilTag alignAtAprilTag = new AlignAtAprilTag(m_robotDrive, m_Limelight, 0, 1);
+//   private final AlignAtAprilTag alignAtAprilTag = new AlignAtAprilTag(m_robotDrive, m_Limelight, 1, 1);
   private final AprilTagAiming aprilTagAiming = new AprilTagAiming(m_robotDrive, m_Limelight);
+  private final GettingInRangeAT GettingInRangeAT = new GettingInRangeAT(m_robotDrive, m_Limelight, 2);
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -82,7 +84,11 @@ public class RobotContainer {
     
     // new JoystickButton(m_driverController, Button.kCross.value)
     //     .whileTrue(alignAtAprilTag);  
+
+    new JoystickButton(m_driverController, Button.kCross.value)
+        .whileTrue(GettingInRangeAT);
     
+    // The X button on controller
     new JoystickButton(m_driverController, Button.kCircle.value)
         .whileTrue(aprilTagAiming);
   }

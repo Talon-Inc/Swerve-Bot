@@ -57,7 +57,7 @@ public class AprilTagAiming extends CommandBase {
       rot = 0;
     }
     // double rotSpeed = pidController.calculate(headingError, 0);
-    swerveDrive.drive(0, 0, rot, isFinished(), isFinished());
+    swerveDrive.drive(0, 0, rot, false, false);
   }
 
   // Called once the command ends or is interrupted.

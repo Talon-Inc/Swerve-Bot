@@ -46,7 +46,9 @@ public class AlignAtAprilTag extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    limelight.turnOnLED();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -54,7 +56,7 @@ public class AlignAtAprilTag extends CommandBase {
 
     Pose2d robotPose = new Pose2d(swerveDrive.getPose().getY(), swerveDrive.getPose().getX(), swerveDrive.getPose().getRotation());
 
-    Pose2d targetPose = new Pose2d(new Translation2d(targetX, targetY), limelight.getRotationToTargetPlane());
+    Pose2d targetPose = new Pose2d(new Translation2d(targetX, -targetY), limelight.getRotationToTargetPlane());
 
     double x, y, rot;
 
@@ -70,15 +72,18 @@ public class AlignAtAprilTag extends CommandBase {
 
     Rotation2d direction = Rotation2d.fromDegrees(180 + angletoTarget - swerveDrive.getHeading() + 0);
 
-    x = direction.getCos() * speed;
-    y = direction.getSin() * speed;
+    x = direction.getCos() * -speed;
+    y = direction.getSin() * -speed;
 
-    swerveDrive.drive(x, y, rot, isFinished(), isFinished());
+    swerveDrive.drive(x, y, rot, true, true);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    limelight.turnOffLED();
+    swerveDrive.drive(0, 0, 0, true, true);
+  }
 
   // Returns true when the command should end.
   @Override
