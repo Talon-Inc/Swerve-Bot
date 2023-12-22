@@ -80,6 +80,10 @@ public class Limelight extends SubsystemBase {
     led.setNumber(1);
   }
 
+  public double isDetecting() {
+    return v;
+  }
+
   public double getDistance() {
     return distanceToTarget;
   }

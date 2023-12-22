@@ -17,7 +17,8 @@ public class AprilTagAiming extends CommandBase {
 
   PIDController pidController;
 
-  double Kp = -0.0078;
+  // This value will change depending on the weight of the robot.
+  double Kp = -0.0076;
 
   /** Creates a new AprilTagAiming. */
   public AprilTagAiming(DriveSubsystem swerveDrive, Limelight limelight) {

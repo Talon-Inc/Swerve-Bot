@@ -84,7 +84,9 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
-        SmartDashboard.putNumber("test", m_gyro.getAngle()); //Gets updated angle of robot
+
+        SmartDashboard.putNumber("yaw", m_gyro.getYaw()); //Gets updated Yaw of robot
+        SmartDashboard.putNumber("yaw rate", m_gyro.getRate()); // Gets the updated rate of change of yaw
   }
 
   /**
